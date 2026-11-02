@@ -32,7 +32,7 @@ struct BoringHeader: View {
                     }
             }
 
-            HStack(spacing: 4) {
+            HStack(spacing: 8) {
                 if vm.notchState == .open {
                     if isHUDType(coordinator.sneakPeek.type) && coordinator.sneakPeek.show && Defaults[.showOpenNotchHUD] {
                         OpenNotchHUD(type: $coordinator.sneakPeek.type, value: $coordinator.sneakPeek.value, icon: $coordinator.sneakPeek.icon)
@@ -42,14 +42,15 @@ struct BoringHeader: View {
                             Button(action: {
                                 vm.toggleCameraPreview()
                             }) {
-                                Capsule()
-                                    .fill(.black)
-                                    .frame(width: 28, height: 28)
-                                    .overlay {
-                                        Image(systemName: "web.camera")
-                                            .foregroundColor(.white)
-                                            .imageScale(.small)
-                                    }
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.white.opacity(0.08))
+                                        .frame(width: 26, height: 26)
+                                    Image(systemName: "web.camera.fill")
+                                        .font(.system(size: 11, weight: .semibold))
+                                        .foregroundColor(.white.opacity(0.85))
+                                }
+                                .contentShape(Circle())
                             }
                             .buttonStyle(PlainButtonStyle())
                         }
@@ -59,20 +60,21 @@ struct BoringHeader: View {
                                     SettingsWindowController.shared.showWindow()
                                 }
                             }) {
-                                Capsule()
-                                    .fill(.black)
-                                    .frame(width: 28, height: 28)
-                                    .overlay {
-                                        Image(systemName: "gear")
-                                            .foregroundColor(.white)
-                                            .imageScale(.small)
-                                    }
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.white.opacity(0.08))
+                                        .frame(width: 26, height: 26)
+                                    Image(systemName: "gearshape.fill")
+                                        .font(.system(size: 11, weight: .semibold))
+                                        .foregroundColor(.white.opacity(0.85))
+                                }
+                                .contentShape(Circle())
                             }
                             .buttonStyle(PlainButtonStyle())
                         }
                         if Defaults[.showBatteryIndicator] {
                             BoringBatteryView(
-                                batteryWidth: 28,
+                                batteryWidth: 24,
                                 isCharging: batteryModel.isCharging,
                                 isInLowPowerMode: batteryModel.isInLowPowerMode,
                                 isPluggedIn: batteryModel.isPluggedIn,
@@ -81,11 +83,12 @@ struct BoringHeader: View {
                                 timeToFullCharge: batteryModel.timeToFullCharge,
                                 isForNotification: false
                             )
+                            .fixedSize()
                         }
                     }
                 }
             }
-            .font(.system(.headline, design: .rounded))
+            .padding(.trailing, 12)
             .frame(maxWidth: .infinity, alignment: .trailing)
             .opacity(vm.notchState == .closed ? 0 : 1)
             .blur(radius: vm.notchState == .closed ? 20 : 0)

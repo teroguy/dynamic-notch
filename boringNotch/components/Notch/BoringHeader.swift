@@ -13,6 +13,12 @@ struct BoringHeader: View {
     @ObservedObject var batteryModel = BatteryStatusViewModel.shared
     @ObservedObject var coordinator = BoringViewCoordinator.shared
     @StateObject var tvm = ShelfStateViewModel.shared
+
+    @Default(.showBatteryIndicator) var showBatteryIndicator
+    @Default(.settingsIconInNotch) var settingsIconInNotch
+    @Default(.showMirror) var showMirror
+    @Default(.showOpenNotchHUD) var showOpenNotchHUD
+
     var body: some View {
         HStack(spacing: 0) {
             HStack {
@@ -34,11 +40,11 @@ struct BoringHeader: View {
 
             HStack(spacing: 8) {
                 if vm.notchState == .open {
-                    if isHUDType(coordinator.sneakPeek.type) && coordinator.sneakPeek.show && Defaults[.showOpenNotchHUD] {
+                    if isHUDType(coordinator.sneakPeek.type) && coordinator.sneakPeek.show && showOpenNotchHUD {
                         OpenNotchHUD(type: $coordinator.sneakPeek.type, value: $coordinator.sneakPeek.value, icon: $coordinator.sneakPeek.icon)
                             .transition(.scale(scale: 0.8).combined(with: .opacity))
                     } else {
-                        if Defaults[.showMirror] {
+                        if showMirror {
                             Button(action: {
                                 vm.toggleCameraPreview()
                             }) {
@@ -54,7 +60,7 @@ struct BoringHeader: View {
                             }
                             .buttonStyle(PlainButtonStyle())
                         }
-                        if Defaults[.settingsIconInNotch] {
+                        if settingsIconInNotch {
                             Button(action: {
                                 DispatchQueue.main.async {
                                     SettingsWindowController.shared.showWindow()
@@ -72,7 +78,7 @@ struct BoringHeader: View {
                             }
                             .buttonStyle(PlainButtonStyle())
                         }
-                        if Defaults[.showBatteryIndicator] {
+                        if showBatteryIndicator {
                             BoringBatteryView(
                                 batteryWidth: 24,
                                 isCharging: batteryModel.isCharging,

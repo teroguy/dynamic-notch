@@ -184,6 +184,7 @@ struct BoringBatteryView: View {
     @State private var isHoveringPopover: Bool = false
     @State private var hideTask: Task<Void, Never>? = nil
 
+    @Default(.showBatteryPercentage) var showBatteryPercentage
     @EnvironmentObject var vm: BoringViewModel
 
     var body: some View {
@@ -193,7 +194,7 @@ struct BoringBatteryView: View {
             }
         }) {
             HStack(spacing: 4) {
-                if Defaults[.showBatteryPercentage] {
+                if showBatteryPercentage {
                     Text("\(Int32(levelBattery))%")
                         .font(.system(size: 11, weight: .semibold, design: .rounded))
                         .foregroundStyle(.white)

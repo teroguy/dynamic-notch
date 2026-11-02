@@ -28,10 +28,18 @@
 
 ---
 
-## Сборка
+## Сборка и установка
 
-Для сборки требуется macOS 14.0+ и Xcode:
+Для автоматической сборки и установки в `/Applications` выполните в терминале одну команду:
 
 ```bash
-DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -scheme boringNotch -configuration Debug build
+./install.sh
 ```
+
+или:
+
+```bash
+make install
+```
+
+Скрипт сам найдет Xcode, скомпилирует приложение, обновит его в папке `/Applications` и перезапустит.
